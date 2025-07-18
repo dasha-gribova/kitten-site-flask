@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Питомник британских котят "Tirliket"</title>
+    <!-- Подключаем наш CSS файл -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Подключаем красивый шрифт с Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Шапка сайта -->
+    <header>
+        <div class="container">
+            <a href="#" class="logo">Tirliket</a>
+            <nav>
+                <ul>
+                    <li><a href="#about">О нас</a></li>
+                    <li><a href="#parents">Родители</a></li>
+                    <li><a href="#kittens">Наши котята</a></li>
+                    <li><a href="#contact">Контакты</a></li>
+                </ul>
+            </nav>
+            <div class="lang-switcher">
+        <!-- Кнопка будет вызывать нашу новую JavaScript-функцию -->
+        <a href="#" onclick="changeLanguage('ru');return false;">RU</a>
+        <a href="#" onclick="changeLanguage('en');return false;">ENG</a>
+    </div>
+            <div id="google_translate_element" style="display: none;"></div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Главный экран -->
+        <section id="hero">
+            <div class="hero-content">
+                <h1>Питомник британских котят</h1>
+                <p>Найдите своего идеального пушистого друга</p>
+                <a href="#kittens" class="btn">Выбрать котенка</a>
+            </div>
+        </section>
+
+        <!-- Секция "О нас" -->
+        <section id="about" class="container section">
+            <h2>О нашем питомнике</h2>
+            <p>
+                Добро пожаловать на сайт нашего питомника британских кошек TIRLIKET! Основанный в 2013 году и зарегистрированный в системе WCF (рег. № 4725-2013), он находится в Санкт-Петербурге. Наш девиз — "Работаем с любовью и на результат!!!". Владение британской кошкой — это приобретение уютного и ласкового друга: они спокойные, самостоятельные, игривые, умные и очень дружелюбные. Эти пушистые создания станут для вашей семьи настоящим спутником и уютным другом.
+
+Мы относимся к нашим котам как к членам семьи, поэтому крайне внимательно следим за их здоровьем и условиями содержания. Наша главная цель — выращивать здоровых и социально подготовленных котят, максимально соответствующих стандартам породы. Все наши котята проходят вакцинацию, социализацию, приучаются к туалету и когтеточке по нашим рекомендациям. Всё поголовье проверено на наследственные заболевания и живет в дружелюбной атмосфере с людьми. Они не содержатся в клетках или вольерах и приезжают к Вам как к семье где любят спать и играть вместе с Вами .
+
+Перед передачей каждый котёнок проходит ветеринарные обследования, получает все необходимые документы: прививки, регистрационные документы WCF и сопроводительные сертификаты. Передача котят осуществляется в возрасте не менее 3-4 месяцев, уже с пройденными вакцинациями и подготовленными к новому дому. Мы готовы оказать помощь с доставкой в любой регион или за границу. Также поддерживаем связь с владельцами наших питомцев, организуем онлайн-показ котенка для покупателя , чтобы он мог удостовериться, что наши котята чувствуют себя комфортно и счастливо .
+
+<br>С уважением,
+<br>заводчик и владелец питомника TIRLIKET ЖАРКОВА ОЛЬГА
+            </p>
+        </section>
+
+    <!-- ============================================= -->
+        <!-- === НОВАЯ СЕКЦИЯ "РОДИТЕЛИ" === -->
+        <!-- ============================================= -->
+        <section id="parents" class="section">
+            <div class="container">
+                <h2>Родители</h2>
+                <div class="parents-grid">
+                    <!-- Карточка Папы -->
+                    <div class="parent-card">
+                        <img src="{{ url_for('static', filename=parents.dad.image) }}" alt="Фото кота {{ parents.dad.name }}">
+                        <div class="parent-content">
+                            <h3>{{ parents.dad.name }} <span class="parent-title">{{ parents.dad.title }}</span></h3>
+                            <ul>
+                                <li><strong>Порода:</strong> {{ parents.dad.breed }}</li>
+                                <li><strong>Окрас:</strong> {{ parents.dad.color }}</li>
+                            </ul>
+                            <p>{{ parents.dad.description }}</p>
+                        </div>
+                    </div>
+                    <!-- Карточка Мамы -->
+                    <div class="parent-card">
+                        <img src="{{ url_for('static', filename=parents.mom.image) }}" alt="Фото кошки {{ parents.mom.name }}">
+                        <div class="parent-content">
+                            <h3>{{ parents.mom.name }} <span class="parent-title">{{ parents.mom.title }}</span></h3>
+                            <ul>
+                                <li><strong>Порода:</strong> {{ parents.mom.breed }}</li>
+                                <li><strong>Окрас:</strong> {{ parents.mom.color }}</li>
+                            </ul>
+                            <p>{{ parents.mom.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Секция "Наши котята" -->
+        <section id="kittens" class="section">
+            <div class="container">
+                <h2>Котята к продаже</h2>
+                <div class="kittens-grid">
+                    <!-- Цикл Jinja2 для отображения карточек котят -->
+                    {% for kitten in kittens %}
+                    <div class="kitten-card">
+                        <img src="{{ url_for('static', filename=kitten.image) }}" alt="Фото котенка {{ kitten.name }}">
+                        <div class="card-content">
+                            <h3>{{ kitten.name }}</h3>
+                            <p><strong>Возраст:</strong> {{ kitten.age }}</p>
+                            <p>{{ kitten.description }}</p>
+                            <div class="price">{{ kitten.price }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+
+        <!-- Секция "Контакты" -->
+        <section id="contact" class="container section">
+            <h2>Свяжитесь с нами</h2>
+            <p>Если вы хотите зарезервировать котенка или задать вопрос, свяжитесь с нами удобным способом:</p>
+            <div class="contact-info">
+                <p><strong>Телефон, WhatsApp:</strong> +7 (921) 311-50-19</p>
+                <p><strong>Email:</strong> <a href="mailto:info@happy-kitty.com">info@happy-kitty.com</a></p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Подвал -->
+    <footer>
+        <div class="container">
+            <p>© 2025 Питомник "Tirliket". Все права защищены.</p>
+        </div>
+    </footer>
+
+     <script type="text/javascript">
+    // НОВАЯ ФУНКЦИЯ для установки cookie и перезагрузки страницы
+    function changeLanguage(lang) {
+        // Устанавливаем cookie с путем для всего сайта
+        // Формат: /исходный_язык/целевой_язык
+        document.cookie = `googtrans=/ru/${lang};path=/`;
+        // Перезагружаем страницу, чтобы Google Translate применил изменения
+        location.reload();
+    }
+
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+            {
+                pageLanguage: 'ru',
+                // Мы больше не показываем виджет, так что можно убрать layout
+            },
+            'google_translate_element'
+        );
+    }
+</script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+
+
+</body>
+</html>
