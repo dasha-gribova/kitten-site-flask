@@ -14,9 +14,24 @@
 <body>
 
     <!-- Шапка сайта -->
-    <header>
-        <div class="container">
-            <a href="#" class="logo">Tirliket</a>
+<!-- templates/index.html -->
+<header>
+    <div class="container">
+        <a href="#" class="logo">Tirliket</a>
+
+        <!-- ============================================== -->
+        <!-- === ИЗМЕНЕНИЯ ЗДЕСЬ === -->
+        <!-- ============================================== -->
+
+        <!-- 1. Добавляем иконку-бургер. Она будет видна только на мобильных -->
+        <button class="menu-toggle" id="mobile-menu-toggle" aria-label="Открыть меню">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+
+        <!-- 2. Оборачиваем навигацию и переключатель языка в один блок с ID -->
+        <div class="header-nav-wrapper" id="header-nav">
             <nav>
                 <ul>
                     <li><a href="#about">О нас</a></li>
@@ -26,13 +41,15 @@
                 </ul>
             </nav>
             <div class="lang-switcher">
-        <!-- Кнопка будет вызывать нашу новую JavaScript-функцию -->
-        <a href="#" onclick="changeLanguage('ru');return false;">RU</a>
-        <a href="#" onclick="changeLanguage('en');return false;">ENG</a>
-    </div>
-            <div id="google_translate_element" style="display: none;"></div>
+                <a href="#" onclick="changeLanguage('ru');return false;">RU</a>
+                <a href="#" onclick="changeLanguage('en');return false;">ENG</a>
+            </div>
         </div>
-    </header>
+
+        <!-- Этот div для Google Translate остается без изменений -->
+        <div id="google_translate_element" style="display: none;"></div>
+    </div>
+</header>
 
     <main>
         <!-- Главный экран -->
@@ -63,36 +80,26 @@
         <!-- === НОВАЯ СЕКЦИЯ "РОДИТЕЛИ" === -->
         <!-- ============================================= -->
         <section id="parents" class="section">
-            <div class="container">
-                <h2>Родители</h2>
-                <div class="parents-grid">
-                    <!-- Карточка Папы -->
+    <div class="container">
+        <h2>Наши производители</h2>
+        <div class="parents-grid">
+            <!-- Теперь мы итерируемся по списку родителей -->
+            {% for parent in parents %}
+                <!-- Оборачиваем всю карточку в ссылку -->
+                <a href="{{ url_for('parent_profile', parent_slug=parent.slug) }}" class="parent-card-link">
                     <div class="parent-card">
-                        <img src="{{ url_for('static', filename=parents.dad.image) }}" alt="Фото кота {{ parents.dad.name }}">
+                        <img src="{{ url_for('static', filename=parent.image) }}" alt="Фото {{ parent.name }}">
                         <div class="parent-content">
-                            <h3>{{ parents.dad.name }} <span class="parent-title">{{ parents.dad.title }}</span></h3>
-                            <ul>
-                                <li><strong>Порода:</strong> {{ parents.dad.breed }}</li>
-                                <li><strong>Окрас:</strong> {{ parents.dad.color }}</li>
-                            </ul>
-                            <p>{{ parents.dad.description }}</p>
+                            <h3>{{ parent.name }} <span class="parent-title">{{ parent.title }}</span></h3>
+                            <p>{{ parent.description }}</p>
+                            <span class="details-link">Подробнее...</span>
                         </div>
                     </div>
-                    <!-- Карточка Мамы -->
-                    <div class="parent-card">
-                        <img src="{{ url_for('static', filename=parents.mom.image) }}" alt="Фото кошки {{ parents.mom.name }}">
-                        <div class="parent-content">
-                            <h3>{{ parents.mom.name }} <span class="parent-title">{{ parents.mom.title }}</span></h3>
-                            <ul>
-                                <li><strong>Порода:</strong> {{ parents.mom.breed }}</li>
-                                <li><strong>Окрас:</strong> {{ parents.mom.color }}</li>
-                            </ul>
-                            <p>{{ parents.mom.description }}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
 
 
         <!-- Секция "Наши котята" -->
@@ -156,7 +163,35 @@
 </script>
 <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
+<!-- ... в конце <body> ... -->
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
+<!-- ============================================== -->
+<!-- === НОВЫЙ СКРИПТ ДЛЯ БУРГЕР-МЕНЮ === -->
+<!-- ============================================== -->
+<script>
+    // Находим кнопку-бургер и само меню по их ID
+    const menuToggle = document.getElementById('mobile-menu-toggle');
+    const nav = document.getElementById('header-nav');
+
+    // Добавляем обработчик события "клик" на кнопку
+    menuToggle.addEventListener('click', () => {
+        // При клике добавляем/убираем класс 'active' у меню
+        nav.classList.toggle('active');
+        // Также добавляем/убираем класс 'active' у самой кнопки (для анимации крестика)
+        menuToggle.classList.toggle('active');
+    });
+
+    // Дополнительно: закрываем меню при клике на любую ссылку в нем
+    const navLinks = document.querySelectorAll('#header-nav a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            nav.classList.remove('active');
+            menuToggle.classList.remove('active');
+        });
+    });
+</script>
 
 </body>
 </html>
+

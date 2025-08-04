@@ -52,6 +52,11 @@ header .container {
     padding: 15px 20px;
 }
 
+.header-nav-wrapper {
+    display: flex; /* Делаем элементы внутри (nav и lang-switcher) горизонтальными */
+    align-items: center; /* Выравниваем их по центру вертикально */
+}
+
 .logo {
     font-size: 1.5em;
     font-weight: 700;
@@ -281,6 +286,88 @@ footer {
     padding: 20px 0;
 }
 
+/* ======================================= */
+/* === Стили для страницы профиля родителя === */
+/* ======================================= */
+
+.back-link {
+    font-size: 1.1em;
+    font-weight: 700;
+}
+
+.profile-container h1 {
+    font-size: 3em;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.profile-title {
+    text-align: center;
+    font-size: 1.2em;
+    color: #7f8c8d;
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+
+.profile-description {
+    font-size: 1.1em;
+    line-height: 1.7;
+    max-width: 800px;
+    margin: 0 auto 50px auto;
+    text-align: center;
+    color: #333; /* Убедитесь, что цвет текста не совпадает с цветом фона! */
+}
+
+/* Добавьте это, чтобы между абзацами был отступ */
+.profile-description p {
+    margin-top: 0;
+    margin-bottom: 1em; /* Создает отступ под каждым абзацем */
+}
+
+/* Стили для галереи */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item img:hover {
+    transform: scale(1.03);
+}
+
+/* Стили для кликабельной карточки на главной */
+.parent-card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.parent-card-link:hover .parent-card {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.parent-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.details-link {
+    display: block;
+    text-align: right;
+    margin-top: 15px;
+    font-weight: 700;
+    color: #3498db;
+}
+
+
 
 
 /* =================================== */
@@ -298,29 +385,6 @@ footer {
         font-size: 2em; /* Уменьшаем заголовки секций */
     }
 
-    /* --- Шапка (Header) --- */
-    header .container {
-        flex-direction: column; /* Ставим лого и навигацию друг под друга */
-        align-items: flex-start; /* Выравниваем все по левому краю */
-    }
-
-    header nav {
-        margin-top: 15px; /* Добавляем отступ сверху для навигации */
-        width: 100%;
-    }
-
-    header nav ul {
-        flex-direction: column; /* Пункты меню теперь тоже вертикальные */
-        width: 100%;
-    }
-
-    header nav li {
-        margin: 10px 0; /* Убираем отступы слева, добавляем вертикальные */
-        text-align: center; /* Центрируем текст в пунктах меню */
-        background-color: #f4f4f4;
-        padding: 10px;
-        border-radius: 5px;
-    }
 
     /* --- Главный экран (Hero) --- */
     #hero {
@@ -380,5 +444,103 @@ footer {
 
     .parent-card img {
         height: 300px; /* Немного уменьшаем высоту фото на мобильных */
+    }
+}
+
+/* =================================== */
+/* === СТИЛИ ДЛЯ БУРГЕР-МЕНЮ === */
+/* =================================== */
+
+/* 1. Иконка-бургер */
+.menu-toggle {
+    display: none; /* Скрыта на больших экранах */
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 101; /* Должна быть поверх всего */
+}
+
+.menu-toggle .bar {
+    width: 100%;
+    height: 3px;
+    background-color: #333;
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Анимация иконки в крестик */
+.menu-toggle.active .bar:nth-child(1) {
+    transform: rotate(45deg) translate(7px, 6px);
+}
+.menu-toggle.active .bar:nth-child(2) {
+    opacity: 0;
+}
+.menu-toggle.active .bar:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+}
+
+
+/* 2. Поведение на мобильных устройствах (используем Media Query) */
+@media (max-width: 768px) {
+    /* Показываем иконку-бургер */
+    .menu-toggle {
+        display: flex;
+    }
+
+    /* Скрываем навигацию по умолчанию */
+    .header-nav-wrapper {
+        position: fixed; /* Позиционируем относительно окна браузера */
+        top: 0;
+        right: -100%; /* Прячем за правым краем экрана */
+        width: 80%; /* Ширина меню */
+        max-width: 300px;
+        height: 100vh; /* Высота на весь экран */
+        background-color: #fff;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        z-index: 100;
+        transition: right 0.4s ease-in-out;
+
+        /* Внутреннее расположение */
+        display: flex;
+        flex-direction: column;
+        padding: 80px 20px 20px;
+        align-items: center;
+    }
+
+    /* Когда меню активно (добавлен класс .active), оно выезжает */
+    .header-nav-wrapper.active {
+        right: 0;
+    }
+
+    /* Стилизуем элементы внутри открытого меню */
+    .header-nav-wrapper nav {
+        width: 100%;
+    }
+
+    .header-nav-wrapper nav ul {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .header-nav-wrapper nav li {
+        margin: 15px 0;
+        width: 100%;
+    }
+
+    .header-nav-wrapper nav a {
+        font-size: 1.5em;
+        padding: 10px;
+        display: block;
+        text-align: center;
+    }
+
+    .header-nav-wrapper .lang-switcher {
+        margin-top: 40px; /* Отступ от основного меню */
     }
 }

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ parent.name }} - Профиль производителя</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <a href="{{ url_for('index') }}#parents" class="back-link">← Назад к родителям</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="profile-container container section">
+            <!-- Имя родителя -->
+            <h1>{{ parent.name }}</h1>
+
+            <!-- ============================================= -->
+            <!-- === БЛОК, КОТОРЫЙ НУЖНО ДОБАВИТЬ/ИСПРАВИТЬ === -->
+            <!-- ============================================= -->
+
+            <!-- 1. Выводим титул (он у вас отсутствовал) -->
+            <p class="profile-title">{{ parent.title }}</p>
+
+            <!-- 2. Выводим полное описание с помощью цикла -->
+            <div class="profile-description">
+                {% for paragraph in parent.full_description %}
+                    <p>{{ paragraph }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- ============================================= -->
+            <!-- === КОНЕЦ БЛОКА ИСПРАВЛЕНИЙ === -->
+            <!-- ============================================= -->
+
+
+            <!-- Галерея -->
+            <h2>Галерея</h2>
+            <div class="gallery-grid">
+                {% for image_path in parent.gallery_images %}
+                    <div class="gallery-item">
+                        <img src="{{ url_for('static', filename=image_path) }}" alt="Фото {{ parent.name }}">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 Питомник "Tirliket". Все права защищены.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

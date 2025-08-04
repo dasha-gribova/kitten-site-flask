@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, abort
 
 app = Flask(__name__)
 
@@ -30,32 +30,82 @@ kittens_data = [
     }
 ]
 
-parents_data = {
-    "dad": {
-        "name": "Оскар",
-        "title": "Большой Международный Чемпион (G.I.CH)",
+parents_data = [
+    {
+        "slug": "Ponchik",
+        "name": "Ponchik Banburu Plush*RU",
         "breed": "Британская короткошерстная",
         "color": "Голубой (BRI a)",
-        "image": "images/dad-cat.jpg",
-        "description": "Наш великолепный кот-производитель с мощным костяком, плюшевой шерстью и невероятно спокойным характером."
+        "image": "images/ponchik_dad.JPG",
+        "description": "Этот котик из дружественного питомника. Очень красивый котик с отличным, плотным костяком, кобби типа. Шеhсть густая и красивого светлоголубого тона. Пончик очень ласковый и общительный. Имея отличную родословную, он является достойным продолжателем британского рода в нашем питомнике.",
+        "full_description": ["Д.р 17 / 11 / 2019 г",
+                             "Родители:",
+                             "F : Ch. Mauriccio Cats Justinian (BRI a)",
+                             "M : Ch. Emma Banburu Plush(BRI a)",
+                             "Заводчик : Домакова Ирина",
+                             "Владелец : Домакова Ирина",
+                             "Тесты :",
+                             "Группа крови А/b( ДНК тест)",
+                             "Генотип : SS (не несет аллель длинношерстности) (ДНК тест)",
+                             "PKD - NN (не несет аллель заболевания) (ДНК тест)",
+                             "FeLV - негатив",
+                             "FIV - негатив",
+                             "HCM - normal"
+                             ],
+        "gallery_images": [
+            "images/ponchik/ponchik1.JPG",
+            "images/ponchik/ponchik2.JPG",
+            "images/ponchik/ponchik3.JPG"
+        ]
     },
-    "mom": {
+    {
+        "slug": "bella",
         "name": "Бэлла",
         "title": "Чемпион породы (CH)",
         "breed": "Британская короткошерстная",
         "color": "Лиловый (BRI c)",
         "image": "images/mom-cat.jpg",
-        "description": "Элегантная и заботливая кошка, передающая котятам свои лучшие черты: круглую мордочку и яркие глаза."
+        "description": "Элегантная и заботливая кошка, передающая котятам свои лучшие черты: круглую мордочку и яркие глаза.",
+
+        # ИСПРАВЛЕНИЕ 2: Добавили недостающие ключи, чтобы структура была одинаковой
+        # Они могут быть пустыми, но должны присутствовать
+        "full_description": [
+            "Бэлла - наша гордость.",
+            "Обладает прекрасной родословной и отличными выставочными оценками."
+        ],
+        "gallery_images": [
+            # Пока можно оставить пустым, если фото для галереи нет
+            # "images/bella_gallery/1.jpg"
+        ]
     }
-}
+]
 
 
-# --- Маршруты (Routes) ---
+# Маршрут для главной страницы (index)
 @app.route('/')
 def index():
-    # Теперь передаем в шаблон ДВА набора данных: и котят, и родителей
+    # Теперь передаем в шаблон список родителей
     return render_template('index.html', kittens=kittens_data, parents=parents_data)
 
+
+# =============================================
+# === НОВЫЙ ДИНАМИЧЕСКИЙ МАРШРУТ ДЛЯ РОДИТЕЛЕЙ ===
+# =============================================
+@app.route('/parent/<parent_slug>/')
+def parent_profile(parent_slug):
+    # Ищем родителя в нашем списке данных по его 'slug'
+    parent_to_show = None
+    for p in parents_data:
+        if p['slug'] == parent_slug:
+            parent_to_show = p
+            break
+
+    # Если родитель с таким slug не найден, показываем ошибку 404
+    if not parent_to_show:
+        abort(404)
+
+    # Если нашли - отображаем его персональную страницу
+    return render_template('parent_profile.html', parent=parent_to_show)
 
 
 # --- Запуск приложения ---
