@@ -92,7 +92,7 @@ parents_data = [
         ],
         "gallery_images": [
             "images/tiki_tak/tiki_tak_1.JPG",
-            "images/tiki_tak_mom.JPG"
+            "images/tiki_tak_mom.jpg"
         ]
     }
 ]
